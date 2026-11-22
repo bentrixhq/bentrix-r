@@ -1,0 +1,5 @@
+useDynLib(bentrix, .registration = TRUE)
+importFrom(jsonlite, toJSON, fromJSON)
+export(bx_local, bx_close, bx_call, bx_read, bx_arm, bx_advance, bx_settle, bx_book)
+export(bx_version, bx_interval_ms, bx_make_tape)
+export(bx_env, bx_reset, bx_step)
