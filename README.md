@@ -32,7 +32,7 @@ book <- b$trade$book(p[1], p[2], p[4])
 
 ## The engine in your own process
 
-The `bentrix` package and its Gym (the in-process engine) use Bentrix's engine library, which is not part of this repository.
+The `bentrix` package and its Gym (the in-process engine) run Bentrix's engine inside your program, with no window. The engine is Bentrix's own library, `libbentrix`, which Bentrix's installer puts in its folder (`%LOCALAPPDATA%\Programs\BENTRIX\libbentrix.dll` on Windows) and the binding finds there; `BENTRIX_FFI` (the file) or `BENTRIX_FFI_DIR` (its folder) names another. It runs for a computer signed in to Bentrix with Plus or Pro; with Free, connect to the running application as above.
 
 ## Documentation
 
@@ -40,4 +40,4 @@ Every method, its arguments, the permission it needs and what it answers: **http
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE). It covers this source code only. Bentrix's engine library that some of these bindings load (`libbentrix`), and the Bentrix application, are Bentrix's own and distributed under their own terms.
+MIT — see [LICENSE](LICENSE). It covers this source code only: Bentrix's engine library (`libbentrix`) and the Bentrix application are Bentrix's own, under their own terms.
