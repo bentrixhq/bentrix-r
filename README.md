@@ -40,4 +40,4 @@ Every method, its arguments, the permission it needs and what it answers: **http
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE). It covers this source code only: Bentrix's engine library (`libbentrix`) and the Bentrix application are Bentrix's own, under their own terms.
+MIT — see [LICENSE](https://github.com/bentrixhq/bentrix-r/blob/main/LICENSE). It covers this source code only: Bentrix's engine library (`libbentrix`) and the Bentrix application are Bentrix's own, under their own terms.
