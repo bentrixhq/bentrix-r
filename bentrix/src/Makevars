@@ -1,4 +1,3 @@
-# The BENTRIX C ABI: its header (BENTRIX_FFI_INCLUDE, crates/bentrix-ffi/include) and its library
-# (BENTRIX_FFI_DIR, the folder holding libbentrix), found again at run time through its rpath.
-PKG_CPPFLAGS = -I$(BENTRIX_FFI_INCLUDE)
-PKG_LIBS = -L$(BENTRIX_FFI_DIR) -lbentrix -Wl,-rpath,$(BENTRIX_FFI_DIR)
+# The engine library is opened at run time (bentrix_r.c's bxr_load), never linked here: the package
+# installs with no libbentrix and no header. dlopen is libdl's on an older glibc.
+PKG_LIBS = -ldl

@@ -1,11 +1,11 @@
-# The R MCP client's walk against a running BENTRIX (bentrix --serve over the CI tape): it finds the
+# The R MCP client's walk against a running Bentrix (bentrix --serve over the CI tape): it finds the
 # application and pairs with nothing typed, reads its state through the generated surface, reads a
 # resource by its template, and runs the same Gym episode every binding runs - through the agents'
 # tools, over the wire - printed as JSON for sdk/python/tests/test_crosslang.py.
 #
-#   R CMD INSTALL --library=<lib> sdk/r/bentrixmcp
+#   R CMD INSTALL --library=<lib> sdk/r/bentrix
 #   LOCALAPPDATA=<the serve's> R_LIBS=<lib> Rscript sdk/r/mcpwalk.R
-library(bentrixmcp)
+library(bentrix)
 
 check <- function(held, what) if (!isTRUE(held)) {
   message("FAILED: ", what)

@@ -2,7 +2,7 @@
 # declared range is refused in words before anything is sent; three examples are three meanings; a put
 # never sends an arrival.
 #
-#   Rscript sdk/r/bentrixmcp/tests/output_test.R
+#   Rscript sdk/r/bentrix/tests/output_test.R
 #
 # Mutation (2026-11-11), red: bx_in_range not comparing - a 1.3 for a 0..1 output was sent.
 here <- dirname(sub("^--file=", "", grep("^--file=", commandArgs(FALSE), value = TRUE)[1]))

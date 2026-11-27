@@ -1,10 +1,10 @@
-# The hand-written half of BENTRIX's R MCP client: the connection and everything that does not change
+# The hand-written half of Bentrix's R MCP client: the connection and everything that does not change
 # when a capability is added (generated.R is the rest, from the catalogue). It speaks MCP revision
 # 2026-07-28 over Streamable HTTP with curl: every request is its own POST carrying the protocol version,
 # the client's identity and its (empty) capabilities in _meta - the same wire as the Python client's
 # _runtime.py and the JavaScript client's client.js, field for field.
 #
-# connect() finds the running application through endpoint.json in BENTRIX's agents folder, pairs with
+# connect() finds the running application through endpoint.json in Bentrix's agents folder, pairs with
 # it through local.secret under a name of this process, and connects with the token it gets.
 
 .bx_protocol <- "2026-07-28"
@@ -101,9 +101,30 @@
   as.character(v)
 }
 
+# A workbench's address stands for its three parts: given as `bench` - or, the first of the three
+# passed by position, as `home` - a "bentrix://<home>/<owner>/bench/<name>" address (or a workbench, by its `uri`)
+# fills `home`, `owner` and `bench`. Parts given as before are left as they are.
+.bx_from_address <- function(vars) {
+  for (key in c("bench", "home")) {
+    v <- vars[[key]]
+    if ((is.environment(v) || is.list(v)) && !is.null(v$uri)) v <- v$uri
+    if (is.character(v) && length(v) == 1 && startsWith(v, "bentrix://")) {
+      parts <- strsplit(substring(v, nchar("bentrix://") + 1), "/", fixed = TRUE)[[1]]
+      if (length(parts) >= 4 && parts[3] == "bench") {
+        vars$home <- parts[1]
+        vars$owner <- parts[2]
+        vars$bench <- parts[4]
+      }
+      return(vars)
+    }
+  }
+  vars
+}
+
 # The RFC 6570 subset the catalogue uses: {name} and {?a,b}. A NULL optional is left out.
 .bx_expand <- function(template, vars) {
   vars <- if (is.null(vars)) list() else vars[!vapply(vars, is.null, logical(1))]
+  vars <- .bx_from_address(vars)
   out <- template
   for (p in regmatches(template, gregexpr("\\{[?&]?[^}]+\\}", template))[[1]]) {
     inner <- substr(p, 2, nchar(p) - 1)
@@ -150,7 +171,7 @@
   .bx_fail("bentrix_error", "the stream ended without a response")
 }
 
-#' A client of one BENTRIX endpoint: every capability of its catalogue under b$<domain>, and call,
+#' A client of one Bentrix endpoint: every capability of its catalogue under b$<domain>, and call,
 #' call_job, read_resource, read_pages, wait_for and verify_catalogue beside them.
 #' @export
 bentrix_client <- function(url, token, timeout = 60) {
@@ -283,7 +304,7 @@ bentrix_client <- function(url, token, timeout = 60) {
   self
 }
 
-#' The folder BENTRIX writes its endpoint and secret into - user_dir(Data, "agents"), as the
+#' The folder Bentrix writes its endpoint and secret into - user_dir(Data, "agents"), as the
 #' application has it.
 #' @export
 agents_dir <- function() {

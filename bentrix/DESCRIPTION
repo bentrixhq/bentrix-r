@@ -1,12 +1,18 @@
 Package: bentrix
 Type: Package
-Title: BENTRIX's Engine in Your Own R Session, and Its Gym
+Title: Bentrix for R: Its MCP Client, and Its Engine in Your Own Session
 Version: 0.1.361
-Description: The embedded BENTRIX through its C ABI (crates/bentrix-ffi): the venue, the replay clock
-    that cannot look ahead, the recordings, and the Gym as a client of BENTRIX's own environment.
+Description: Every capability of a running Bentrix, over its Model Context Protocol endpoint: the
+    client finds the application, pairs with it and calls its tools, generated from Bentrix's
+    capability catalogue. And Bentrix's engine in your own R session through its C ABI: the venue,
+    the replay clock that cannot look ahead, the recordings, and the Gym as a client of Bentrix's
+    own environment. The engine's library is opened on its first use, never at install, so the
+    client needs no library.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Imports: jsonlite
+Imports: curl, jsonlite, tools, utils
 NeedsCompilation: yes
-SystemRequirements: the BENTRIX C ABI library (libbentrix), its folder in BENTRIX_FFI_DIR and its
-    header's in BENTRIX_FFI_INCLUDE at install
+SystemRequirements: for the engine in your own session only, Bentrix's engine library
+    (libbentrix), installed with Bentrix and found at run time: the file BENTRIX_FFI names, or
+    libbentrix in the folder BENTRIX_FFI_DIR names, or on Windows Bentrix's own folder.
+Collate: 'generated.R' 'client.R' 'bench.R' 'forecast.R' 'output.R' 'bentrix.R'

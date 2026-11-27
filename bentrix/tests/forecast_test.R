@@ -1,6 +1,6 @@
 # A forecast's builder and an evaluation's sheet.
 #
-#   Rscript sdk/r/bentrixmcp/tests/forecast_test.R
+#   Rscript sdk/r/bentrix/tests/forecast_test.R
 #
 # Mutations (2026-11-08), each red: spec writing the timeframe whatever it is (the element form named an interval);
 # declined read as a failure (a decline was EvalFailed).

@@ -1,0 +1,1 @@
+# The engine library is opened at run time (bentrix_r.c's bxr_load, LoadLibraryW), never linked here.

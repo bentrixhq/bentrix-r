@@ -8,20 +8,22 @@ The client is generated from the catalogue of the Bentrix release it came with, 
 
 ## What you need
 
-R 4 or later with the packages `curl` and `jsonlite`, and Bentrix open on the same computer.
+R 4 or later with the packages `curl` and `jsonlite`, and Bentrix open on the same computer. Installed from source the package compiles a small C file, so it needs R's own compiler tools (Rtools on Windows) — as every R package with compiled code does.
 
 ## Install
 
-The client is the package `bentrixmcp`. From a clone of this repository:
+One package, `bentrix`, holds the client and the engine. From a clone of this repository:
 
 ```bash
-R CMD INSTALL bentrixmcp
+R CMD INSTALL bentrix
 ```
+
+It installs with no engine library: the engine's is opened on its first use, never at install.
 
 ## Connect
 
 ```r
-library(bentrixmcp)
+library(bentrix)
 
 b <- connect("my-agent")
 state <- b$workspace$get_state()
@@ -32,7 +34,7 @@ book <- b$trade$book(p[1], p[2], p[4])
 
 ## The engine in your own process
 
-The `bentrix` package and its Gym (the in-process engine) run Bentrix's engine inside your program, with no window. The engine is Bentrix's own library, `libbentrix`, which Bentrix's installer puts in its folder (`%LOCALAPPDATA%\Programs\BENTRIX\libbentrix.dll` on Windows) and the binding finds there; `BENTRIX_FFI` (the file) or `BENTRIX_FFI_DIR` (its folder) names another. It runs for a computer signed in to Bentrix with Plus or Pro; with Free, connect to the running application as above.
+The same package's `bx_local` and its Gym (`bx_env`) run Bentrix's engine inside your program, with no window. The engine is Bentrix's own library, `libbentrix`, which Bentrix's installer puts in its folder (`%LOCALAPPDATA%\Programs\BENTRIX\libbentrix.dll` on Windows) and the binding finds there; `BENTRIX_FFI` (the file) or `BENTRIX_FFI_DIR` (its folder) names another. It runs for a computer signed in to Bentrix with Plus or Pro; with Free, connect to the running application as above.
 
 ## Documentation
 

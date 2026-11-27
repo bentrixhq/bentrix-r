@@ -1,7 +1,7 @@
 /*
- * bentrix.h - BENTRIX's engine behind a C ABI (crates/bentrix-ffi).
+ * bentrix.h - Bentrix's engine behind a C ABI (crates/bentrix-ffi).
  *
- * The embedded BENTRIX - the venue, the replay clock that cannot look ahead, the recordings, the Gym -
+ * The embedded Bentrix - the venue, the replay clock that cannot look ahead, the recordings, the Gym -
  * in your own process. JSON in, JSON out: a tool by name with its arguments, a resource by its
  * catalogue name with its variables - the agents' own catalogue, read, laboratory and paper.
  *
@@ -26,18 +26,32 @@ extern "C" {
 
 typedef struct BxSession BxSession;
 
+/* The interface this header describes. A binding compares it with bx_abi() before anything else and refuses a library
+ * of another interface: it is raised whenever a function's arguments or answer change, a function goes, or the
+ * catalogue's major moves. 0.1.382's library had no bx_abi: its interface was 1. */
+#define BX_ABI 2
+
+/* The interface this library speaks: BX_ABI of the header it was built with. */
+uint32_t bx_abi(void);
+
 /* The build this library was made from. Static: never freed. */
 const char *bx_version(void);
 
 /* Why the last failure on this thread failed. Never freed by the caller. */
 const char *bx_last_error(void);
 
+/* The last failure's word on this thread, when it has one: a refused bx_open's "held" (another program holds the
+ * workspace), "package" (not signed in on this computer with Plus or Pro) or "argument"; "" for every other failure.
+ * Static: never freed. */
+const char *bx_last_error_kind(void);
+
 /* Release a char * this library answered. NULL is a no-op. */
 void bx_free(char *p);
 
-/* Open a workspace (NULL: the person's own) and its recordings (NULL: the person's own). NULL on a
+/* Open a workspace (NULL: the person's own) and its recordings (NULL: the person's own), by a program in the
+ * language `client` names ("C", "Go" ...; NULL: none), which every answer, export and log line names. NULL on a
  * failure - a window or a --serve already on the workspace refuses it by name. */
-BxSession *bx_open(const char *workspace, const char *store);
+BxSession *bx_open(const char *workspace, const char *store, const char *client);
 
 /* Close a session: the workspace persisted and let go. NULL is a no-op. */
 void bx_close(BxSession *s);
@@ -77,11 +91,20 @@ char *bx_next_close(BxSession *s, const char *bench, const char *interval, const
 /* Up to n closes, as bx_next_close each: a JSON array (bx_free). */
 char *bx_run_until(BxSession *s, const char *bench, const char *interval, const char *symbols_json, size_t n, int64_t end_ms, int has_end);
 
+/* A whole environment step in one crossing: acts, the clock moved, reads (JSON in, JSON out; bx_free). */
+char *bx_step(BxSession *s, const char *bench, const char *spec_json);
+
+/* The engine's counters as JSON (bx_free); reset not 0 starts them again after answering. */
+char *bx_stats(BxSession *s, int reset);
+
 /* Remember where an armed workbench stands; its number in id. */
 int bx_snapshot(BxSession *s, const char *bench, uint64_t *id);
 
 /* Take an armed workbench back to snapshot id; where its clock stands in reached (may be NULL). */
 int bx_restore(BxSession *s, const char *bench, uint64_t id, int64_t *reached);
+
+/* Whether a workspace (the person's own when NULL) is held by another process, as JSON (bx_free). */
+char *bx_workspace_held(const char *workspace);
 
 /* A tape of the markets named ([[symbol, scale], ...], the first the main one) over first..last (YYYY-MM-DD):
    its workspace and store paths in the out-pointers (bx_free each). */
